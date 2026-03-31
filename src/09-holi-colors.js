@@ -55,20 +55,72 @@
  */
 export function mixColors(color1, color2) {
   // Your code here
+  if(color1 === null || color2 === null || typeof(color1)!=="object" || typeof(color2)!== "object") return null;
+
+  let col3 = {name:"",r:0,g:0,b:0};
+  col3.r = Number(((color1.r + color2.r)/2).toFixed(0))
+  col3.g = Number(((color1.g + color2.g)/2).toFixed(0))
+  col3.b = Number(((color1.b + color2.b)/2).toFixed(0))
+  col3.name = `${color1.name}-${color2.name}`
+  return col3;
 }
 
 export function adjustBrightness(color, factor) {
   // Your code here
+  if(color === null || typeof(factor)!=="number") return null;
+
+  let col = structuredClone(color);
+  col.r = Math.round(Math.max(0,Math.min(255,col.r*factor)));
+  col.g = Math.round(Math.max(0,Math.min(255,col.g*factor)));
+  col.b = Math.round(Math.max(0,Math.min(255,col.b*factor)));
+  return col;
 }
 
 export function addToPalette(palette, color) {
   // Your code here
+  if(!Array.isArray(palette)) return [color];
+  if(color === null || typeof(color)!=="object") return structuredClone(palette);
+  var res = structuredClone(palette);
+  //var colArr = Object.entries(color);
+  res.push(color);
+  return res;
+
 }
 
 export function removeFromPalette(palette, colorName) {
   // Your code here
+  if(!Array.isArray(palette)) return [];
+  let res = structuredClone(palette);
+  res = res.filter((e)=>e.name!==colorName);
+  return res;
 }
 
 export function mergePalettes(palette1, palette2) {
   // Your code here
+  if(!Array.isArray(palette1)) palette1 = [];
+  if(!Array.isArray(palette2)) palette2 = [];
+
+  let arr1 = structuredClone(palette1);
+  let arr2 = structuredClone(palette2);
+
+  var obj = {};
+  let res = [];
+  for(const item of arr1)
+  {
+    if(!obj.hasOwnProperty(item.name))
+    {
+      obj[item.name] = 1;
+      res.push(item);
+    }
+  }
+  for(const item of arr2)
+  {
+    if(!obj.hasOwnProperty(item.name))
+    {
+      obj[item.name] = 1;
+      res.push(item);
+    }
+  }
+  return res;
+
 }

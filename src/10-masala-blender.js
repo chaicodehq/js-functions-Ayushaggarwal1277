@@ -54,28 +54,77 @@
  */
 export function pipe(...fns) {
   // Your code here
+  return (data) => {
+    let res = data;
+    for(const f of fns)
+    {
+      res = f(res);
+    }
+    return res;
+  }
 }
 
 export function compose(...fns) {
-  // Your code here
+  return (data) => {
+    let res = data;
+
+    for (let i = fns.length - 1; i >= 0; i--) {
+      res = fns[i](res);
+    }
+
+    return res;
+  };
 }
 
 export function grind(spice) {
   // Your code here
+  return {...spice , form:"powder"};
 }
 
 export function roast(spice) {
   // Your code here
+    return {...spice ,roasted:true ,aroma:"strong"};
+
 }
 
 export function mix(spice) {
   // Your code here
+    return {...spice , mixed:true};
+
 }
 
 export function pack(spice) {
   // Your code here
+    return {...spice ,packed : true ,label : `${spice.name} Masala`};
+
 }
 
 export function createRecipe(steps) {
-  // Your code here
+  // identity function
+  if (!Array.isArray(steps) || steps.length === 0) {
+    return (x) => x;
+  }
+
+  // step name → function mapping
+  const stepMap = {
+    grind,
+    roast,
+    mix,
+    pack
+  };
+
+  return (input) => {
+    let result = input;
+
+    for (const stepName of steps) {
+      const fn = stepMap[stepName];
+
+      if (typeof fn === "function") {
+        result = fn(result);
+      }
+      // unknown steps are skipped
+    }
+
+    return result;
+  };
 }

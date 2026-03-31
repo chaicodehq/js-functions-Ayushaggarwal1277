@@ -39,20 +39,34 @@
  */
 export const calcStrikeRate = (runs, balls) => {
   // Your code here
+  if(typeof(runs)!=="number" || typeof(balls)!=="number" || !Number.isInteger(runs) || !Number.isInteger(balls) ||runs<0 || balls<=0) return 0;
+  return Number(((runs/balls)*100).toFixed(2));
 };
 
 export const calcEconomy = (runsConceded, overs) => {
   // Your code here
+  if(typeof(runsConceded)!=="number" || typeof(overs)!=="number" || !Number.isInteger(runsConceded) || !Number.isInteger(overs) ||runsConceded<0 || overs<=0) return 0;
+
+  return Number((runsConceded/overs).toFixed(2));
 };
 
 export const calcBattingAvg = (totalRuns, innings, notOuts = 0) => {
   // Your code here
+  if(typeof(totalRuns)!=="number" || typeof(innings)!=="number" || typeof(notOuts)!=="number" || !Number.isInteger(totalRuns) || !Number.isInteger(innings) || !Number.isInteger(notOuts) || innings-notOuts <=0 ) return 0;
+
+  return Number(((totalRuns)/(innings-notOuts)).toFixed(2));
 };
 
 export const isAllRounder = (battingAvg, economy) => {
   // Your code here
+  if(battingAvg>30 && economy < 8) return true;
+  return false;
 };
 
 export const getPlayerCard = (player) => {
   // Your code here
+  if(player===null || player===undefined || typeof(player.name) !== "string" || player.name ==="") return null;
+  let res = {name:player.name,strikeRate: calcStrikeRate(player.runs,player.balls),economy: calcEconomy(player.runsConceded,player.overs),battingAvg: calcBattingAvg(player.totalRuns,player.innings,player.notOuts),isAllRounder: isAllRounder(calcBattingAvg(player.totalRuns,player.innings,player.notOuts),calcEconomy(player.runsConceded,player.overs))};
+
+  return res;
 };
